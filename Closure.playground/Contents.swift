@@ -24,12 +24,28 @@ func method(inputValue: Int, inputStr: String) -> String {
 // 関数を実行
 method(inputValue: 10, inputStr: "文字列です") //10と文字列ですが入力されました
 
-// クロージャ
-//let value = { (inputValue: Int, inputStr: String) -> String in
-//  return "\(inputValue)と\(inputStr)が入力されました"
-//}
+
+// Closure-basic2
+let value = { (inputValue: Int, inputStr: String) -> String in
+  return "\(inputValue)と\(inputStr)が入力されました"
+}
 // クロージャを実行
-//value(10, "文字列です")
+value(10, "文字列です") //10と文字列ですが入力されました
+
+
+//クロージャをパラメータに持つ関数
+//1)
+func method1(closure1: (String,Int) -> Void ) -> Void{
+    closure1("クロージャを実行", 3)
+}
+
+let closure1: ((String, Int) -> String) = { (text: String, value: Int) -> String in
+
+    return "\(text)と\(value)が代入されました"
+}
+
+closure1("クロージャ", 3) //クロージャと3が代入されました
+
 
 
 
