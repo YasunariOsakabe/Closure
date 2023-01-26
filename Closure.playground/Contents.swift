@@ -93,6 +93,49 @@ method {
     print($0)
 }
 
+//nilを許容するクロージャ
+
+//1)
+// nilを許容していないのでエラーとなる
+let value: Int = nil
+
+// nilを許容していないのでエラーとなる
+let closure: ((Int) -> Void) = nil
 
 
+//2)
+// nilを許容しているのでエラーとならない
+// あとから何か名前のない関数を代入するのでvarで定義
+var value: Int? = nil
 
+// nilを許容しているのでエラーとならない
+// あとから何か名前のない関数を代入するのでvarで定義
+var closureOrNil: ((Int) -> Void)? = nil
+
+//3)
+// 変数を定義
+var closureOrNil: ((Int) -> Void)? = nil
+
+// 変数を実行 = nilを実行
+closureOrNil?(10)
+// 出力 --> "何も起きない"
+
+
+// 名前のない関数を代入
+closureOrNil = { (value: Int) in
+    print("入力したの\(value)だね")
+}
+
+// 変数を実行 = 変数に代入された名前のない関数を実行
+closureOrNil?(10)
+// 出力 --> 入力したの10だね
+
+// 別の名前のない関数を代入
+closureOrNil = { (value: Int) in
+    let v = value * value
+    print("計算結果は\(v)")
+}
+
+// 変数を実行 = 変数に代入された名前のない関数を実行
+closureOrNil?(10)
+// 出力 --> 計算結果は100
