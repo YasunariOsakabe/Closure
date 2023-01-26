@@ -139,3 +139,53 @@ closureOrNil = { (value: Int) in
 // 変数を実行 = 変数に代入された名前のない関数を実行
 closureOrNil?(10)
 // 出力 --> 計算結果は100
+
+
+
+//API通信
+// URLSession.shared.dataTaskを使ってサーバーと通信するメソッド
+func api(zipcode: String, closure: @escaping ((String) -> Void)) {
+    
+    print("[1] api関数の処理を開始")
+
+    let url = URL(string: "https://zipcloud.ibsnet.co.jp/api/search?zipcode=\(zipcode)")!
+    let request = URLRequest(url: url)
+
+    // URLSession.shared.dataTaskメソッドがcompletionHandlerという名前のクロージャをパラメータに持っている
+    // それに渡すclosure
+    // api通信が終わればこのclosureに代入された名前のない関数が実行される
+    let dataTaskCompletionClosure = { (data: Data?, response: URLResponse?, error: Error?) in
+        
+        print("[2] dataTaskCompletionClosureに代入した名前のない関数の処理を開始")
+        
+        guard let data = data else {
+            closure("通信失敗")
+            return
+        }
+        let jsonStr = String(data: data, encoding: .utf8)!
+        
+        print("[3] api関数実行時に渡しているclosure定数に代入された名前のない関数を実行する")
+        closure(jsonStr)
+    }
+
+    print("[4] api通信するためのメソッドdataTaskにdataTaskCompletionClosureを代入")
+    let task = URLSession.shared.dataTask(with: request, completionHandler: dataTaskCompletionClosure)
+
+    print("[5] resumeメソッドを実行すると通信が始まる")
+    task.resume()
+    
+    print("[6] 通信が終わるのを待たずにメソッドを抜ける")
+}
+
+// api関数の実行時に渡す定数
+let zipcode = "1006117"
+let inputClosure = { response in
+    print("[7] inputClosure定数に代入されている名前のない関数の処理を開始")
+    print(response)
+}
+
+print("[8] api関数の実行前に行う処理")
+
+api(zipcode: zipcode, closure: inputClosure)
+
+print("[9] api関数の実行後に行う処理")
