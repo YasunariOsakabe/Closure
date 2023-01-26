@@ -47,7 +47,51 @@ let closure1: ((String, Int) -> String) = { (text: String, value: Int) -> String
 closure1("クロージャ", 3) //クロージャと3が代入されました
 
 
+//以下の実行内容は書き方が違うだけで内容は同一となる
+//下に行くにつれて省略された形になる
+//1)
+func method(closure: ((Int) -> Void)) {
+    let v = Int.random(in: 0...100) // 0~100をランダムに返す
+    closure(v)
+}
 
+//2)
+let closure = {(value: Int) -> Void in
+    guard value < 50 else {
+        print("値が小さすぎます")
+        return
+    }
+    print(value)
+}
+
+method(closure: closure)
+
+//3)
+method(closure: {(value: Int) -> Void in
+    guard value < 50 else {
+        print("値が小さすぎます")
+        return
+    }
+    print(value)
+})
+
+//4)
+method() {(value: Int) -> Void in
+    guard value < 50 else {
+        print("値が小さすぎます")
+        return
+    }
+    print(value)
+}
+
+//5)
+method {
+    guard $0 < 50 else {
+        print("値が小さすぎます")
+        return
+    }
+    print($0)
+}
 
 
 
