@@ -208,3 +208,21 @@ func sayAgeMessage(name: String, age: Int, ageMessage: (String,Int) -> String) {
 
 sayAgeMessage(name: "Yasu", age: 22, ageMessage: getAgeMessage)
 
+
+
+//練習2)
+
+let getRecordMessage = { (date: Date,time: Int, record: String) -> String in
+    let recordMessage = "\(date): \(time)時間 \(record)を学習しました。"
+    return recordMessage
+}
+let result = getRecordMessage(Date(), 2, "クロージャ")
+print(result)  //クロージャのみを実行
+
+
+func sayRecordMessage(date: Date,time: Int, record: String, getClosure: (Date, Int, String) -> String) {
+    let sayClosureMessage = getClosure(date, time, record)
+    print(sayClosureMessage)
+}
+
+sayRecordMessage(date: Date(), time: 1, record: "API通信", getClosure: getRecordMessage)
