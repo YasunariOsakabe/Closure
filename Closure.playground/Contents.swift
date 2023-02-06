@@ -145,7 +145,7 @@ closureOrNil?(10)
 //API通信
 // URLSession.shared.dataTaskを使ってサーバーと通信するメソッド
 func api(zipcode: String, closure: @escaping ((String) -> Void)) {
-    
+
     print("[1] api関数の処理を開始")
 
     let url = URL(string: "https://zipcloud.ibsnet.co.jp/api/search?zipcode=\(zipcode)")!
@@ -155,15 +155,15 @@ func api(zipcode: String, closure: @escaping ((String) -> Void)) {
     // それに渡すclosure
     // api通信が終わればこのclosureに代入された名前のない関数が実行される
     let dataTaskCompletionClosure = { (data: Data?, response: URLResponse?, error: Error?) in
-        
+
         print("[2] dataTaskCompletionClosureに代入した名前のない関数の処理を開始")
-        
+
         guard let data = data else {
             closure("通信失敗")
             return
         }
         let jsonStr = String(data: data, encoding: .utf8)!
-        
+
         print("[3] api関数実行時に渡しているclosure定数に代入された名前のない関数を実行する")
         closure(jsonStr)
     }
@@ -173,7 +173,7 @@ func api(zipcode: String, closure: @escaping ((String) -> Void)) {
 
     print("[5] resumeメソッドを実行すると通信が始まる")
     task.resume()
-    
+
     print("[6] 通信が終わるのを待たずにメソッドを抜ける")
 }
 
@@ -189,3 +189,22 @@ print("[8] api関数の実行前に行う処理")
 api(zipcode: zipcode, closure: inputClosure)
 
 print("[9] api関数の実行後に行う処理")
+
+
+
+//クロージャを引数に持つ関数練習
+//練習1)
+//クロージャを定義
+let getAgeMessage = { (name: String, age: Int) -> String in
+    let message = name + ":\(age)歳です"
+    return message
+}
+
+//上記のクロージャを関数の引数に渡す
+func sayAgeMessage(name: String, age: Int, ageMessage: (String,Int) -> String) {
+    let sayMessage = ageMessage(name,age)
+    print(sayMessage)
+}
+
+sayAgeMessage(name: "Yasu", age: 22, ageMessage: getAgeMessage)
+
